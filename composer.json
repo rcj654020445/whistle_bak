@@ -1,0 +1,14 @@
+{
+    "name": "whistle/ocr",
+    "description": "ocr",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "MrTom",
+            "email": "540054895@qq.com"
+        }
+    ],
+    "require": {
+        "guzzlehttp/guzzle": "~6.0"
+    }
+}
