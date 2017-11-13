@@ -65,7 +65,7 @@ class MultipartStream implements StreamInterface
     protected function createStream(array $elements)
     {
         $stream = new AppendStream();
-
+        print_r($elements);
         foreach ($elements as $element) {
             $this->addElement($stream, $element);
         }
