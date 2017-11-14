@@ -26,24 +26,27 @@ class ali extends drive
 		        ],
 		        'configure'=>[
 		            'dataType'=>50,
-		            'dataValue'=>['side'=>'back']
+		            'dataValue'=>"{\"side\": \"back\"}"
 		        ]
 		    ]
 		];
+        //echo json_encode($json,true);
 
         $res = $client->request(
         	            'POST',
         	            'http://dm-51.data.aliyun.com/rest/160601/ocr/ocr_idcard.json',
-        	            //['http_errors' => false],
-                        ['headers' =>
-                            [
-                                'Content-Type'=>'application/json;charset=UTF-8',
-                                'Authorization'=>'APPCODE 75BDFB9AFA564246BF9812F33A5BFF5D'
-                                /*'appKey'=>'23806697',
-                                'AppSecret'=>'b37883c1f9c9b3f425c5d90504fa9e2a'*/
-                            ]
-                        ],
-                        ['json'=>$json]
+                        [
+	                        'headers' =>
+	                            [
+	                                'Content-Type'=>'application/json;charset=UTF-8',
+	                                'Accept'=>'application/json',
+	                                'Authorization'=>'APPCODE 75BDFB9AFA564246BF9812F33A5BFF5D'
+	                                /*'appKey'=>'23806697',
+	                                'AppSecret'=>'b37883c1f9c9b3f425c5d90504fa9e2a'*/
+	                            ],
+	                        'json'=>$json
+                        ]
+                        
                     );
         echo $res->getBody();
 	}
