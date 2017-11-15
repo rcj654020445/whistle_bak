@@ -5,7 +5,7 @@ class sign
 {
 	
 
-	protected $config ;//= ['appid'=>'10107444','bucket'=>'identify','secret_id'=>'AKIDsXw5arRfCVZOxIGErGPIuHRbcVBerCJC','secret_key'=>'nNjriJdgTzEDvMXS6ex0nKbcNr65oHTP'];
+	protected $config ;
 
     public function __construct(array $config)
     {
