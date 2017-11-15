@@ -7,19 +7,11 @@ class sign
 
 	protected $config ;//= ['appid'=>'10107444','bucket'=>'identify','secret_id'=>'AKIDsXw5arRfCVZOxIGErGPIuHRbcVBerCJC','secret_key'=>'nNjriJdgTzEDvMXS6ex0nKbcNr65oHTP'];
 
-    protected function __construct(array $config)
+    public function __construct(array $config)
     {
         $this->config = $config;
     }
 
-    public static function getInstance()
-    {     
-         if(!self::$instance instanceof self){
-              self::$instance = new self();
-         }
-         return self::$instance;
-    }
-    
     
     
     //拼接签名串

@@ -12,85 +12,211 @@ use GuzzleHttp\Client;
 
 class baidu extends drive
 {  
-	//身份证
-    const idcardUrl = 'https://aip.baidubce.com/rest/2.0/ocr/v1/idcard';
 
-    //银行卡
-    const bankcardUrl = 'https://aip.baidubce.com/rest/2.0/ocr/v1/bankcard';
+	const IDCARD = 'https://aip.baidubce.com/rest/2.0/ocr/v1/idcard';
+
+    const VEHICLELICENSE = 'https://aip.baidubce.com/rest/2.0/ocr/v1/vehicle_license';
+
+    const DRIVINGLICENSE = 'https://aip.baidubce.com/rest/2.0/ocr/v1/driving_license';
+
+    const BANKCARD = 'https://aip.baidubce.com/rest/2.0/ocr/v1/bankcard';
+
+    const GENERAL_BASIC = 'https://aip.baidubce.com/rest/2.0/ocr/v1/general_basic';
+
+    const LICENSEPLATE = 'https://aip.baidubce.com/rest/2.0/ocr/v1/license_plate';
+
+    const GENERAL  = 'https://aip.baidubce.com/rest/2.0/ocr/v1/general';
     
-    
+    public function __construct(array $config)
+    {
+        if(empty($config)){
+          throw new \Exception("no config", 100);
+        }
+        //config
+        $this->config = $config;
+        //client
+        $this->client = new Client();
+        //token
+        $token = new token($this->config);
+        $this->token = $token->getToken();
+        
+        //headers
+        $this->header = ['Content-Type'=>'application/x-www-form-urlencoded'];
+        $this->query = ['access_token'=>$this->token];
+    }
+
     /**
     @desc 下面是百度的公共接口实现 
     **/
 
     //识别身份证
-	public function idcard()
+	public function idcard($url, array $option)
 	{
-        $client  = new Client();
-      
-        $token = new token('9960454','u0NYnkqa1bAUGGS9xm5T8ewS','1KA9VQGRlMTwXYRAggAiPIGNX4e6g2yW');
+        $bodyParma = ['id_card_side','image','detect_direction','detect_risk'];
         //
-        $cont = base64_encode(file_get_contents('http://weixin.weisi360.cn/storage/idcard/2017-10-24/sF9_B4QzxOqcVvzUzYU9Gvr2zv9VDhLqQ0na_yC5rOmHCxpmI8zI_GSJo974WY-l.jpg')) ;
-        $body = array("detect_direction"=>true,"id_card_side" =>"back",'image'=>$cont,'detect_risk'=>false);
-        $token = $token->getToken();
-        $headers['Content-Type'] = 'application/x-www-form-urlencoded';
-        $res = $client->request('POST','https://aip.baidubce.com/rest/2.0/ocr/v1/idcard',['query'=>['access_token'=>$token],'verify'=>false,'headers'=>$headers,'form_params'=>$body]);
-        
-        echo $res->getBody();
+        $image = base64_encode(file_get_contents($url)) ;
+        $this->body['image'] = $image;
+        $this->body = array_merge($this->body,$option);
+        //获取传递过来的所有字段名
+        $keys = array_keys($this->body);
+        //识别传入的字段必须在规定的字段中
+        array_map(function($v)use($bodyParma){if(!in_array($v, $bodyParma)){throw new \Exception("Unknown parameters: ".$v, 100);}  }, $keys);
+        //
+        $res = $this->client->request('POST',self::IDCARD,['query'=>$this->query,'verify'=>false,'headers'=>$this->header,'form_params'=>$this->body]);
+        return $res->getBody();
 	}
 
 	//行驶证识别
-	public function vehicleLicense()
+	public function vehicleLicense($url, $option=[])
 	{
-		$client  = new Client();
-      
-        $token = new token('9960454','u0NYnkqa1bAUGGS9xm5T8ewS','1KA9VQGRlMTwXYRAggAiPIGNX4e6g2yW');
-        //
-        $cont = base64_encode(file_get_contents('E:\test\test\whistles\test.jpg')) ;
-        $body = array("detect_direction"=>true,'image'=>$cont);
-        $token = $token->getToken();
-        $headers['Content-Type'] = 'application/x-www-form-urlencoded';
-        $res = $client->request('POST','https://aip.baidubce.com/rest/2.0/ocr/v1/vehicle_license',['query'=>['access_token'=>$token],'verify'=>false,'headers'=>$headers,'form_params'=>$body]);
         
-        echo $res->getBody();
+        $bodyParma = ['detect_direction','image','accuracy'];
+        //
+        $cont = base64_encode(file_get_contents($url)) ;
+        //
+        $this->body['image'] = $cont;
+        $this->body = array_merge($this->body,$option);
+        //获取传递过来的所有字段名
+        $keys = array_keys($this->body);
+        //识别传入的字段必须在规定的字段中
+        array_map(function($v)use($bodyParma){if(!in_array($v, $bodyParma)){throw new \Exception("Unknown parameters: ".$v, 100);}  }, $keys);
+        //
+        $res = $this->client->request('POST',self::VEHICLELICENSE,['query'=>$this->query,'verify'=>false,'headers'=>$this->header,'form_params'=>$this->body]);
+        
+        return $res->getBody();
 	}
 
 	//驾驶证
-	public function drivingLicense()
+    /**
+    @desc 驾驶证
+    @parma $url  图片网络地址|本地地址
+    @parma $option 其它数据项，参见下面的bodyParma
+    */
+	public function drivingLicense($url, $option=[])
     {
-		
-	}
-    
-    //银行卡识别
-	public function bankcard(){
-		
-	}
-    
-    //车牌
-	public function licensePlate(){
-		
+		$bodyParma = ['detect_direction','image'];
+        //
+        $cont = base64_encode(file_get_contents($url)) ;
+        //
+        $this->body['image'] = $cont;
+        $this->body = array_merge($this->body,$option);
+        //获取传递过来的所有字段名
+        $keys = array_keys($this->body);
+        //识别传入的字段必须在规定的字段中
+        array_map(function($v)use($bodyParma){if(!in_array($v, $bodyParma)){throw new \Exception("Unknown parameters: ".$v, 100);}  }, $keys);
+        //
+        $res = $this->client->request('POST',self::DRIVINGLICENSE,['query'=>$this->query,'verify'=>false,'headers'=>$this->header,'form_params'=>$this->body]);
+        
+        return $res->getBody();
 	}
 
+
     //通用文字识别
-	public function basicGeneral(){
-		
-	}
+    /**
+    @desc 通用文字识别
+    @parma $file  图片网络地址|本地地址
+    @parma $option 其它数据项，参见下面的bodyParma，其中url|image只能选其一
+    **/
+    public function basicGeneral($file, $option=[])
+    {
+        $bodyParma = ['image','url','language_type','detect_direction','detect_language','probability'];
+        //
+        $cont = base64_encode(file_get_contents($file)) ;
+        //判断file是url形式还是本地图片形式
+        stripos($file, 'http')?$this->body['url'] = $cont:$this->body['image'] = $cont;
+        
+        $this->body = array_merge($this->body,$option);
+        //获取传递过来的所有字段名
+        $keys = array_keys($this->body);
+        //识别传入的字段必须在规定的字段中
+        array_map(function($v)use($bodyParma){if(!in_array($v, $bodyParma)){throw new \Exception("Unknown parameters: ".$v, 100);}  }, $keys);
+        //
+        $res = $this->client->request('POST',self::GENERAL_BASIC,['query'=>$this->query,'verify'=>false,'headers'=>$this->header,'form_params'=>$this->body]);
+        
+        return $res->getBody();
+        
+    }
+    
     /**
     @desc 下面是百度的私有接口实现 
     **/
-    //通用文字识别(含文字位置信息)
-	public function general(){
 
+    //银行卡识别
+    /**
+    @desc 银行卡识别
+    @parma $url  图片网络地址|本地地址
+    @parma $option 其它数据项，参见下面的bodyParma
+    **/
+	public function bankcard($url, $option=[])
+    {
+        $bodyParma = ['image'];
+        //
+        $cont = base64_encode(file_get_contents($url)) ;
+        //
+        $this->body['image'] = $cont;
+        $this->body = array_merge($this->body,$option);
+        //获取传递过来的所有字段名
+        $keys = array_keys($this->body);
+        //识别传入的字段必须在规定的字段中
+        array_map(function($v)use($bodyParma){if(!in_array($v, $bodyParma)){throw new \Exception("Unknown parameters: ".$v, 100);}  }, $keys);
+        //
+        $res = $this->client->request('POST',self::BANKCARD,['query'=>$this->query,'verify'=>false,'headers'=>$this->header,'form_params'=>$this->body]);
+        
+        return $res->getBody();
+	}
+    
+    //车牌
+	public function licensePlate($url, $option=[])
+    {
+		$bodyParma = ['image'];
+        //
+        $cont = base64_encode(file_get_contents($url)) ;
+        //
+        $this->body['image'] = $cont;
+        $this->body = array_merge($this->body,$option);
+        //获取传递过来的所有字段名
+        $keys = array_keys($this->body);
+        //识别传入的字段必须在规定的字段中
+        array_map(function($v)use($bodyParma){if(!in_array($v, $bodyParma)){throw new \Exception("Unknown parameters: ".$v, 100);}  }, $keys);
+        //
+        $res = $this->client->request('POST',self::LICENSEPLATE,['query'=>$this->query,'verify'=>false,'headers'=>$this->header,'form_params'=>$this->body]);
+        
+        return $res->getBody();
+	}
+
+    
+    
+    //通用文字识别(含文字位置信息)
+	public function general($file, $option=[])
+    {
+        $bodyParma = ['image','url','recognize_granularity','language_type','detect_direction','detect_language','vertexes_location','probability'];
+        //
+        $cont = base64_encode(file_get_contents($file)) ;
+        //判断file是url形式还是本地图片形式
+        stripos($file, 'http')?$this->body['url'] = $cont:$this->body['image'] = $cont;
+        
+        $this->body = array_merge($this->body,$option);
+        //获取传递过来的所有字段名
+        $keys = array_keys($this->body);
+        //识别传入的字段必须在规定的字段中
+        array_map(function($v)use($bodyParma){if(!in_array($v, $bodyParma)){throw new \Exception("Unknown parameters: ".$v, 100);}  }, $keys);
+        //
+        $res = $this->client->request('POST',self::GENERAL,['query'=>$this->query,'verify'=>false,'headers'=>$this->header,'form_params'=>$this->body]);
+        
+        return $res->getBody();
 	}
     
     //网图OCR识别
-	public function webImage(){
+	public function webImage()
+    {
 		
 	}
 
     //生僻字OCR识别
-	public function enhancedGeneral(){
+	public function enhancedGeneral()
+    {
 		
 	}
+    
 }
 ?>

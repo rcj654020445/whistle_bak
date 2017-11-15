@@ -14,11 +14,11 @@ class token
 
     protected $client;
 
-    public function __construct($appid,$apikey,$secretkey)
+    public function __construct($config)
     {
-    	$this->appid = $appid;
-    	$this->apikey = $apikey;
-    	$this->secretkey = $secretkey;
+    	$this->appid = $config['appid'];
+    	$this->apikey = $config['apikey'];
+    	$this->secretkey = $config['secretkey'];
     	$this->client = new Client();
     	
     }

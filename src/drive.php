@@ -1,46 +1,34 @@
 <?php
 namespace whistle;
-use GuzzleHttp\Client;
 
 abstract class drive
 {
-    
+
+    //配置信息
     protected $config;
 
+    //client对象
     protected $client;
 
+    //请求body体
+    protected $body;
+
+    //请求headers头
+    protected $headers;
+
 	//识别身份证
-	abstract function idcard();
+	abstract public function idcard($url,array $option);
 
 	//行驶证识别
-	abstract function vehicleLicense();
+	abstract public function vehicleLicense($url, $option=[]);
 
 	//驾驶证
-	abstract function drivingLicense();
-    
-    //银行卡识别
-	abstract function bankcard();
-    
-    //车牌
-	abstract function licensePlate();
+	abstract function drivingLicense($url, $option=[]);
 
     //通用文字识别
-	abstract function basicGeneral();
+    abstract function basicGeneral($url, $option=[]);
     
-    public function __construct(array $config)
-    {
-    	if(empty($config)){
-             throw new \Exception("no config", 100);
-    	}
-        $this->config = $config;
-        $this->client = new Client();
-    }
-
-    //不存在的则抛异常
-    public function __call($name,$param)
-    {
-       throw new \Exception("method not exist", 100);
-    }
+    
 
 }
 ?>
