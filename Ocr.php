@@ -6,7 +6,9 @@
  * Time: 17:44
  */
 namespace whistle\ocr;
+
 use Illuminate\Support\Facades\Facade;
+
 class Ocr extends Facade
 {
     public static function getFacadeAccessor()

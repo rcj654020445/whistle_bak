@@ -3,9 +3,9 @@ namespace whistle\tencent;
 
 class sign
 {
-	
+    
 
-	protected $config ;//= ['appid'=>'10107444','bucket'=>'identify','secret_id'=>'AKIDsXw5arRfCVZOxIGErGPIuHRbcVBerCJC','secret_key'=>'nNjriJdgTzEDvMXS6ex0nKbcNr65oHTP'];
+    protected $config ;
 
     public function __construct(array $config)
     {
@@ -17,9 +17,9 @@ class sign
     //拼接签名串
     protected function addstr()
     {
-    	$expired = time() + 2592000;
-    	$current = time();
-    	$rdm = rand();
+        $expired = time() + 2592000;
+        $current = time();
+        $rdm = rand();
         $plainText = "a=".$this->config['appid']."&b=".$this->config['bucket']."&k=".$this->config['secret_id']."&e=$expired&t=$current&r=$rdm&f=";
         return $plainText;
     }
@@ -27,14 +27,12 @@ class sign
     //生成签名
     public function getSign()
     {
-    	$str = $this->addstr();
-    	$bin = hash_hmac('SHA1', $str, $this->config['secret_key'], true);
-    	return base64_encode($bin.$str);
+        $str = $this->addstr();
+        $bin = hash_hmac('SHA1', $str, $this->config['secret_key'], true);
+        return base64_encode($bin.$str);
     }
 
     protected function __clone()
     {
-
     }
 }
-?>

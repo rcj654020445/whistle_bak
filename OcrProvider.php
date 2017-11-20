@@ -7,6 +7,7 @@
  */
 
 namespace whistle\ocr;
+
 use Illuminate\Support\ServiceProvider;
 use whistle\BaseOcr;
 
@@ -38,7 +39,7 @@ class OcrProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->singleton('Ocr',function ($app) {
+        $this->app->singleton('Ocr', function ($app) {
             $className = 'whistle\driver\\'.config('ocrConfig.DEFAULT');
             $config = config('ocrConfig.'.config('ocrConfig.DEFAULT'));
             require __DIR__.'/vendor/autoload.php';
