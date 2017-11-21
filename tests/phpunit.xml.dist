@@ -1,0 +1,15 @@
+<phpunit bootstrap="./BootStrap.php" colors="true">
+    <testsuites>
+        <testsuite name="Ocr Test Suite">
+            <directory>./</directory>
+        </testsuite>
+    </testsuites>
+    <filter>
+        <whitelist>
+            <directory>../src/</directory>
+            <exclude>
+                <directory>../vendor/</directory>
+            </exclude>
+        </whitelist>
+    </filter>
+</phpunit>
