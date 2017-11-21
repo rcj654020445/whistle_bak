@@ -1,6 +1,6 @@
 ## 介绍
 这是OCR工具laravel扩展包，目前集合了百度和腾讯API，它提供诸如身份证照片识别，银行卡照片识别，文字识别、网图OCR识别、生僻字OCR识别、行驶证识别、驾驶证等其他文字识别功能，目前百度提供的api比较齐全，所以推荐设置默认驱动为百度，具体的各驱动实现了哪些功能需要查看各自api文档。
-
+[![Build Status](https://travis-ci.org/rcj654020445/whistles.svg?branch=master)](https://travis-ci.org/rcj654020445/whistles)
 ## install
 - 通过composer安装包
 ```
