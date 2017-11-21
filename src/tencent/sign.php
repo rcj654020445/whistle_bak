@@ -5,7 +5,9 @@ class sign
 {
     
 
+
     protected $config ;
+
 
     public function __construct(array $config)
     {
@@ -36,3 +38,5 @@ class sign
     {
     }
 }
+
+
