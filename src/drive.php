@@ -27,4 +27,10 @@ abstract class drive
 
     //通用文字识别
     abstract function basicGeneral($url, $option = []);
+    
+    //调用不存在的方法，抛出异常
+    public function __call($methd, $args)
+    {
+        throw new Exception("Unsupported methods ", 100);
+    }
 }
