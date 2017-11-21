@@ -1,1 +1,3 @@
 !./src/baidu/token.php
+composer.lock
+vendor/

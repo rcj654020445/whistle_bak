@@ -2,7 +2,7 @@
 
 namespace whistle\driver;
 
-use whistle\drive;
+use whistle\driver;
 use whistle\baidu\sign;
 use whistle\baidu\SignOption;
 use whistle\baidu\token;

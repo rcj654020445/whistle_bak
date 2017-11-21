@@ -1,7 +1,7 @@
 <?php
 namespace whistle;
 
-abstract class drive
+abstract class driver
 {
 
     //配置信息

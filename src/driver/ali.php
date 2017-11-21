@@ -1,7 +1,7 @@
 <?php
 namespace whistle\driver;
 
-use whistle\drive;
+use whistle\driver;
 use GuzzleHttp\Client;
 
 class ali extends drive

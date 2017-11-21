@@ -2,7 +2,7 @@
 
 namespace whistle\driver;
 
-use whistle\drive;
+use whistle\driver;
 use whistle\tencent\sign;
 use GuzzleHttp\Client;
 
