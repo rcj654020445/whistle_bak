@@ -1,4 +1,5 @@
 <?php
+
 namespace whistle\baidu;
 
 use GuzzleHttp\Client;
